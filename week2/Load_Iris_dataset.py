@@ -9,7 +9,7 @@
 from sklearn import datasets
 import numpy as np
 import matplotlib.pyplot as plt
-
+%matplotlib
 
 
 # Import the dataset
@@ -32,7 +32,7 @@ fig = plt.figure(figsize=(12, 8))
 plt.plot(X[y==0, 0], X[y==0, 1], 'b.', label='Setosa')
 plt.plot(X[y==1, 0], X[y==1, 1], 'r.', label='Versicolour')
 plt.legend()
-
+plt.show()
 
 
 whos
