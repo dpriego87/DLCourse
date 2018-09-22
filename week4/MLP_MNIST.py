@@ -68,8 +68,10 @@ print(y_val.shape)
 
 # Build your model architecture (layers with activations), and print summary
 model = Sequential()
-model.add(Dense(units=64, input_dim=x_train.shape[1], activation='relu'))
-# model.add(Dense(units=32, activation='relu'))
+model.add(Dense(units=512, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dropout(0.2)) # 20 percent are dropped out at random
+model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(0.00003)))
+model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(0.00003)))
 model.add(Dense(units=10, activation='softmax'))
 model.summary()
 
