@@ -22,7 +22,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from keras.datasets import mnist
 from keras import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Activation
 from keras import backend as K
 
 
@@ -100,10 +100,15 @@ print(Y_testing.shape)
 model = Sequential()
 # YOUR NETWORK HERE
 # ..
-model.add(Dense(units=25, input_dim=x_train.shape[1], activation='relu'))
-model.add(Dense(units=10, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dense(units=50, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dense(units=20, input_dim=x_train.shape[1], activation='relu'))
+# model.add(Activation('relu',alpha=0.01))
 # model.add(Dense(units=5, input_dim=x_train.shape[1], activation='relu'))
 model.add(Dense(units=1, activation = 'sigmoid'))
+# model.add(Dense(units=1, activation = 'softmax'))
+# model.add(Activation('softmax'))
+
+
 model.summary()
 # Dense()
 
@@ -162,3 +167,10 @@ print("Test error: {}".format(test_error))
 
 
 # In[ ]:
+
+# Explore network weights
+
+Ws = model.layers[0].get_weights()[0]
+bs = model.layers[0].get_weights()[1]
+print(Ws.shape)
+print(bs.shape)
