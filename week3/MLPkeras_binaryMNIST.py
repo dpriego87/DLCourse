@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 from keras.datasets import mnist
 from keras import Sequential
 from keras.layers import Dense
+from keras import backend as K
 
 
 # In[2]:
@@ -96,17 +97,24 @@ print(Y_testing.shape)
 
 
 # Build your model architecture (layers with activations), and print summary
-#model = Sequential()
+model = Sequential()
 # YOUR NETWORK HERE
-# ...
-#model.summary()
+# ..
+model.add(Dense(units=5, input_dim=x_train.shape[1], activation=K.relu))
+model.add(Dense(units=3, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dense(units=1, activation = 'sigmoid'))
+model.summary()
+Dense()
 
 
 # In[44]:
 
-
+from keras import optimizers
+sgd = optimizers.SGD(lr=0.01, clipvalue=0.5)
+#model.compile(optimizer='sgd', loss='mean_squared_error')
+model.compile(optimizer=sgd, loss='mean_squared_error')
 # Compile your model (define optimizer and loss function)
-model.compile(optimizer='sgd', loss='mean_squared_error')
+# model.compile(optimizer='sgd', loss='mean_squared_error')
 
 
 # In[45]:
@@ -134,7 +142,6 @@ y_hat = model.predict(X_testing)
 
 # In[48]:
 
-
 # Plot info about classes: test set and prediction
 plt.figure(figsize=(20, 4))
 ax = plt.subplot(1, 2, 1)
@@ -154,7 +161,3 @@ print("Test error: {}".format(test_error))
 
 
 # In[ ]:
-
-
-
-
