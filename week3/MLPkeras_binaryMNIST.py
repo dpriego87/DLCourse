@@ -100,11 +100,12 @@ print(Y_testing.shape)
 model = Sequential()
 # YOUR NETWORK HERE
 # ..
-model.add(Dense(units=5, input_dim=x_train.shape[1], activation=K.relu))
-model.add(Dense(units=3, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dense(units=25, input_dim=x_train.shape[1], activation='relu'))
+model.add(Dense(units=10, input_dim=x_train.shape[1], activation='relu'))
+# model.add(Dense(units=5, input_dim=x_train.shape[1], activation='relu'))
 model.add(Dense(units=1, activation = 'sigmoid'))
 model.summary()
-Dense()
+# Dense()
 
 
 # In[44]:
@@ -120,8 +121,8 @@ model.compile(optimizer=sgd, loss='mean_squared_error')
 # In[45]:
 
 
+hist = model.fit(X_training, Y_training, epochs=20, batch_size=100)
 # Train your model
-hist = model.fit(X_training, Y_training, epochs=10, batch_size=100)
 
 
 # In[46]:
