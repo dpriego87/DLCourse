@@ -71,7 +71,9 @@ model = Sequential()
 model.add(Dense(units=512, input_dim=x_train.shape[1], activation='relu'))
 model.add(Dropout(0.2)) # 20 percent are dropped out at random
 model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(0.00003)))
-model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(0.00003)))
+model.add(Dense(units=256, kernel_regularizer=l2(0.00003)))
+model.add(BatchNormalization())
+model.add(Activation('relu'))
 model.add(Dense(units=10, activation='softmax'))
 model.summary()
 
@@ -89,7 +91,7 @@ model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
 
 # Train your model
 num_epochs = 20
-# losses = np.zeros((num_epochs/, 2))
+losses = np.zeros((num_epochs, 2))
 print(f"Training on {x_train.shape[0]} samples - validating on {x_val.shape[0]} samples.")
 for epoch in range(num_epochs):
     print(f"Epoch: {epoch+1:3d} -- ", end="")
