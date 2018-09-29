@@ -4,19 +4,6 @@
 # In[1]:
 
 
-#Este notebook carga el dataset MNIST, imprime algunos ejemplos, y despues extrae sólo dos clases indicadas (ejemplo: 0, 1)
-#para realizar clasificación binaria.
-#Tareas:
-#- Diseña un MLP y entrenalo para realizar clasificación binaria.
-#- Juega con distintas arquitrecturas para ver con cuál obtienes menor pérdida.
-#  desde un perceptron sigmoide, hasta una red de 4 o 5 capas intermedias (con diferentes cantidades de unidades).
-#- Evalua el desempeño con diferentes learning rates, tamaño de batches, y número de épocas.
-#- Elige otras dos clases y repite el proceso (ejemplo, clases 3 vs 8, o 4 vs 9)
-
-
-# In[6]:
-
-
 # Imports
 import numpy as np
 import matplotlib.pyplot as plt
@@ -64,32 +51,37 @@ print("Validation set:")
 print(x_val.shape)
 print(y_val.shape)
 
-# In[16]:
+
+# In[4]:
+
+
+IDX = np.random.permutation(10)
+print(IDX)
+
+
+# In[5]:
+
 
 # Build your model architecture (layers with activations), and print summary
 model = Sequential()
 model.add(Dense(units=512, input_dim=x_train.shape[1], activation='relu', kernel_regularizer=l2(9e-6)))
-model.add(Dropout(0.2)) # 20 percent are dropped out at random
-model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(3e-6)))
-#model.add(Dense(units=256, activation='relu', kernel_regularizer=l2(9e-5)))
-model.add(Dense(units=128, activation='relu', kernel_regularizer=l2(3e-3)))
-model.add(Dense(units=64, kernel_regularizer=l2(0.00003)))
-model.add(Dropout(0.2)) # 20 percent are dropped out at random
-#model.add(BatchNormalization())
-#model.add(Activation('relu'))
+model.add(Dropout(0.5))
+model.add(Dense(units=264, activation='relu', kernel_regularizer=l1(3e-6)))
+model.add(Dense(units=128, activation='relu', kernel_regularizer=l1(9e-5)))
+model.add(Dense(units=64,  activation='relu', kernel_regularizer=l2(3e-3)))
+model.add(Dropout(0.2))
 model.add(Dense(units=10, activation='softmax'))
 model.summary()
 
 
-# In[13]:
+# In[6]:
 
 
 # Compile your model (define optimizer and loss function)
-model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
-# model.compile(optimizer='sgd', loss='mse')
+model.compile(optimizer='adadelta', loss='categorical_crossentropy')
 
 
-# In[14]:
+# In[7]:
 
 
 # Train your model
@@ -98,17 +90,17 @@ losses = np.zeros((num_epochs, 2))
 print(f"Training on {x_train.shape[0]} samples - validating on {x_val.shape[0]} samples.")
 for epoch in range(num_epochs):
     print(f"Epoch: {epoch+1:3d} -- ", end="")
-    model.fit(x_train, y_train, epochs=1, batch_size=128, validation_data=(x_val, y_val), verbose=False)
+    model.fit(x_train, y_train, epochs=1, batch_size=128, verbose=False)
     losses[epoch, 0] = model.evaluate(x_train, y_train, verbose=False)
     losses[epoch, 1] = model.evaluate(x_val, y_val, verbose=False)
-    print(f"Train loss: {losses[epoch, 0]:6.4f} -- Val loss{losses[epoch, 1]:6.4f}")
+    print(f"Train loss: {losses[epoch, 0]:6.4f} -- Val loss: {losses[epoch, 1]:6.4f}")
 
 
-# In[15]:
+# In[8]:
 
 
 # Plot training history
-plt.figure(figsize=(15, 10))
+plt.figure(figsize=(12, 9))
 plt.plot(losses[:, 0], label='Training', linewidth=2)
 plt.plot(losses[:, 1], label='Validation', linewidth=2)
 plt.legend(fontsize=18)
@@ -118,17 +110,46 @@ plt.ylim([0, 0.5])
 plt.tick_params(labelsize=18)
 
 
-# In[17]:
+# In[9]:
 
 
 # Make predictions for test set and evaluate performance
 y_hat = model.predict(x_test)
 test_loss = model.evaluate(x_test, y_test)
 print("Test error: {:6.4f}".format(test_loss))
+for i in range(10):
+    print(y_test[i])
+    print(np.round(y_hat[i]))
+    print("\n")
+
+
+# In[26]:
+
+
+#
+y_true = np.argmax(y_test, axis=1)
+y_pred = np.argmax(y_hat, axis=1)
+from sklearn.metrics import confusion_matrix
+conf_matrix = confusion_matrix(y_true, y_pred)
+plt.imshow(conf_matrix, interpolation='nearest')
+plt.title("Confusion Matrix")
+plt.colorbar()
 
 
 # In[ ]:
-for i in range(10):
-    print(y_test[i])
-    print(y_hat[i].round(4))
-    print("\n")
+
+
+
+
+
+# In[21]:
+
+
+whos
+
+
+# In[ ]:
+
+
+
+
