@@ -168,7 +168,3 @@ print("Test loss: {:6.4f}, acc: {:6.4f}".format(test_loss, test_acc))
 
 
 # In[ ]:
-
-
-
-
