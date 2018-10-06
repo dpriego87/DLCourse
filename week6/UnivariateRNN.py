@@ -65,7 +65,7 @@ def create_dataset(dataset, look_back=1):
 
 
 # reshape into X=t and Y=t+1
-look_back = 1
+look_back = 3
 trainX, trainY = create_dataset(train, look_back)
 testX, testY = create_dataset(test, look_back)
 
@@ -84,7 +84,7 @@ print(trainX.shape)
 
 # Create model
 model = Sequential()
-model.add(SimpleRNN(units=4, input_shape=(1, 1)))
+model.add(SimpleRNN(units=4, input_shape=(1, look_back)))
 model.add(Dense(units=1, activation='sigmoid'))
 model.summary()
 
@@ -144,7 +144,3 @@ plt.show()
 
 
 # In[ ]:
-
-
-
-
